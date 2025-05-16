@@ -2,7 +2,7 @@ import java.util.Objects;
 import java.util.HashMap;
 
 public class SubTask extends Task{
-    int epicId;
+    private int epicId;
 
     public SubTask(String name, String description, int epicId) {
         super(name, description);
@@ -20,11 +20,7 @@ public class SubTask extends Task{
 
 
 
-    public static void printAllSubTasks(HashMap<Integer, SubTask> subtasks){
-        for (SubTask subtask : subtasks.values()){
-            System.out.println(subtask.toString());
-        }
-    }
+
 
     @Override
     public String toString() {

@@ -2,54 +2,60 @@ import java.util.HashMap;
 import java.util.ArrayList;
 
 public class TaskManager {
-    public static HashMap<Integer, Task> getTasks() {
+    HashMap<Integer, Task> tasks = new HashMap<>();
+    HashMap<Integer, SubTask> subTasks = new HashMap<>();
+    HashMap<Integer, Epic> epics = new HashMap<>();
+    int currentId = 0;
+
+
+
+    public ArrayList<Task> printAllTasks(){
+        ArrayList<Task> all = new ArrayList<>();
+        all.addAll(printAllSimpleTasks(tasks));
+        all.addAll(printAllEpics(epics));
+        all.addAll(printAllSubTasks(subTasks));
+        return all;
+    }
+
+    public HashMap<Integer, Task> getTasks() {
         return tasks;
     }
 
-    public static void setTasks(HashMap<Integer, Task> tasks) {
-        TaskManager.tasks = tasks;
-    }
 
-    public static HashMap<Integer, SubTask> getSubTasks() {
+    public HashMap<Integer, SubTask> getSubTasks() {
         return subTasks;
     }
 
-    public static void setSubTasks(HashMap<Integer, SubTask> subTasks) {
-        TaskManager.subTasks = subTasks;
-    }
 
-    public static HashMap<Integer, Epic> getEpics() {
+    public HashMap<Integer, Epic> getEpics() {
         return epics;
     }
 
-    public static void setEpics(HashMap<Integer, Epic> epics) {
-        TaskManager.epics = epics;
-    }
 
-    static HashMap<Integer, Task> tasks = new HashMap<>();
-    static HashMap<Integer, SubTask> subTasks = new HashMap<>();
-    static HashMap<Integer, Epic> epics = new HashMap<>();
-    static int currentId = 0;
-
-    public static void printAllTasks(){
-        Task.printAllTasks(tasks);
-        Epic.printAllEpics(epics);
-        SubTask.printAllSubTasks(subTasks);
-
-    }
-
-    public static void deleteAllTasks() {
+    public void deleteAllTasks() {
         tasks.clear();
         epics.clear();
         subTasks.clear();
     }
 
-    public static Task getTaskById(int id){
+    public Task getTaskById(int id){
         if (tasks.containsKey(id)){
             return tasks.get(id);
-        }else if (epics.containsKey(id)) {
-             return epics.get(id);
-        }else if (subTasks.containsKey(id)) {
+        }else {
+            return null;
+        }
+    }
+    public  Epic getEpicById(int id) {
+        if (epics.containsKey(id)) {
+            return epics.get(id);
+
+        }else {
+            return null;
+        }
+    }
+
+    public  SubTask getSubTaskById(int id) {
+        if (subTasks.containsKey(id)) {
             return subTasks.get(id);
         } else {
             return null;
@@ -67,7 +73,7 @@ public class TaskManager {
             Epic epic = epics.get(epicId);
             if (epic != null) {
                 epic.getSubTaskIds().remove(Integer.valueOf(id));
-                epic.updateEpicStatus(epic); // пересчёт статуса эпика
+                updateEpicStatus(epic); // пересчёт статуса эпика
             }
             subTasks.remove(id);
         }
@@ -104,23 +110,97 @@ public class TaskManager {
         subtask.setId(currentId++);
         subTasks.put(subtask.getId(), subtask);
         epic.getSubTaskIds().add(subtask.getId());
-        epic.updateEpicStatus(epic);
+        updateEpicStatus(epic);
     }
 
-    public static void changeTaskStatus(int id, TaskStatus status){
+    public void changeTaskStatus(int id, TaskStatus status){
         if (tasks.containsKey(id)){
             Task task = tasks.get(id);
             task.setStatus(status);
-        }else if (epics.containsKey(id)) {
-            System.out.println("Нельзя менять статус эпика вручную");
-        }else if (subTasks.containsKey(id)) {
-            SubTask subtask = subTasks.get(id);
-            Epic epic = epics.get(subtask.getEpicId());
-            subtask.setStatus(status);
-            epic.updateEpicStatus(epic);
         }else {
             System.out.println("Нет такого id");
         }
     }
+
+    public void changeSubTaskStatus(int id, TaskStatus status){
+        if (subTasks.containsKey(id)) {
+            SubTask subtask = subTasks.get(id);
+            Epic epic = epics.get(subtask.getEpicId());
+            subtask.setStatus(status);
+            updateEpicStatus(epic);
+        }else {
+            System.out.println("Нет такого id");
+        }
+    }
+
+    public ArrayList<Epic> printAllEpics(HashMap<Integer, Epic> epics){//кроме печати они возвращают
+        ArrayList<Epic> result = new ArrayList<>();
+        for (Epic epic : epics.values()){
+            result.add(epic);
+            System.out.println(epic.toString());
+        }
+        return result;
+    }
+
+    public ArrayList<SubTask> printAllSubTasksInEpic(Epic epic){
+        ArrayList<SubTask> result = new ArrayList<>();
+        for (int i : epic.getSubTaskIds()){
+            result.add(subTasks.get(i));
+            System.out.println(subTasks.get(i).toString());
+        }
+        return result;
+    }
+
+    public void updateEpicStatus(Epic epic) {
+        ArrayList<Integer> subtaskIds = epic.getSubTaskIds();
+
+        if (subtaskIds == null || subtaskIds.isEmpty()) {
+            epic.setStatus(TaskStatus.NEW);
+            return;
+        }
+
+        boolean allDone = true;
+        boolean allNew = true;
+
+        for (int subTaskId : subtaskIds) {
+            TaskStatus subTaskStatus = subTasks.get(subTaskId).getStatus();
+
+            if (subTaskStatus != TaskStatus.DONE) {
+                allDone = false;
+            }
+            if (subTaskStatus != TaskStatus.NEW) {
+                allNew = false;
+            }
+        }
+
+        if (allDone) {
+            epic.setStatus(TaskStatus.DONE);
+        } else if (allNew) {
+            epic.setStatus(TaskStatus.NEW);
+        } else {
+            epic.setStatus(TaskStatus.IN_PROGRESS);
+        }
+    }
+
+
+    public static ArrayList<SubTask> printAllSubTasks(HashMap<Integer, SubTask> subtasks){
+        ArrayList<SubTask> result = new ArrayList<>();
+        for (SubTask subtask : subtasks.values()){
+            result.add(subtask);
+            System.out.println(subtask.toString());
+        }
+        return result;
+    }
+
+    public static ArrayList<Task> printAllSimpleTasks(HashMap<Integer, Task> tasks){
+        ArrayList<Task> result = new ArrayList<>();
+        for (Task task : tasks.values()){
+            System.out.println(task.toString());
+            result.add(task);
+        }
+        return result;
+    }
+
+
 
 }

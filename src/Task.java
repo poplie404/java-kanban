@@ -3,10 +3,10 @@ import java.util.Objects;
 import java.util.Arrays;
 
 public class Task {
-    String name;
-    String description;
-    int id;
-    TaskStatus status;
+    protected String name;
+    protected String description;
+    protected int id;
+    protected TaskStatus status;
 
     public Task(String name, String description) {
         this.name = name;
@@ -46,14 +46,6 @@ public class Task {
     public void setStatus(TaskStatus status) {
         this.status = status;
     }
-
-
-    public static void printAllTasks(HashMap<Integer, Task> tasks){
-        for (Task task : tasks.values()){
-            System.out.println(task.toString());
-        }
-    }
-
 
     @Override
     public String toString() {

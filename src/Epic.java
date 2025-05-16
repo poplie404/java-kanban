@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task{
-    ArrayList<Integer> subTaskIds;
+    private ArrayList<Integer> subTaskIds;
 
     public Epic(String name, String description) {
         super(name, description);
@@ -20,47 +20,6 @@ public class Epic extends Task{
 
 
 
-    public static void updateEpicStatus(Epic epic){
-        ArrayList<Integer> subtaskIds = epic.getSubTaskIds();
-        if (subtaskIds.isEmpty()){
-            epic.setStatus(TaskStatus.NEW);
-            return;
-        }
-
-        boolean allDone = true;
-        boolean allNew = true;
-        for(int subTaskId : subtaskIds){
-            TaskStatus subTaskStatus = TaskManager.subTasks.get(subTaskId).getStatus();
-
-            if (subTaskStatus != TaskStatus.DONE){
-                allDone = false;
-            }
-            if (subTaskStatus != TaskStatus.NEW){
-                allNew = false;
-            }
-        }
-
-        if (allDone){
-            epic.setStatus(TaskStatus.DONE);
-        } else if (allNew) {
-            epic.setStatus(TaskStatus.NEW);
-        }
-        else{
-            epic.setStatus(TaskStatus.IN_PROGRESS);
-        }
-    }
-
-    public static void printAllEpics(HashMap<Integer, Epic> epics){
-        for (Epic epic : epics.values()){
-            System.out.println(epic.toString());
-        }
-    }
-
-    public static void printAllSubTasksInEpic(Epic epic){
-        for (int i : epic.subTaskIds){
-            System.out.println(TaskManager.subTasks.get(i).toString());
-        }
-    }
 
     @Override
     public String toString() {
