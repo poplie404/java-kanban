@@ -8,22 +8,18 @@ public class TaskManager {
     private HashMap<Integer, Epic> epics = new HashMap<>();
     private int currentId = 0;
 
-
-
     public ArrayList<Task> getAllTasks(){
         ArrayList<Task> all = new ArrayList<>();
         all.addAll(getTasks());
         all.addAll(getEpics());
         all.addAll(getSubTasks());
-
         return all;
     }
 
     public List<Task> getTasks() {
         return new ArrayList<>(tasks.values());
     }
-
-
+    
     public List<SubTask> getSubTasks() {
         return new ArrayList<>(subTasks.values());
     }
