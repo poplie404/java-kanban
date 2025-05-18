@@ -28,10 +28,12 @@ public class Main {
         task1.setStatus(TaskStatus.IN_PROGRESS);
         sub2.setStatus(TaskStatus.IN_PROGRESS);
         sub3.setStatus(TaskStatus.DONE);
+        epic2.setDescription("Новая подзадача в этом эпике");
 
         taskManager.updateTask(task1);
         taskManager.updateSubTask(sub2);
         taskManager.updateSubTask(sub3);
+        taskManager.updateEpic(epic2);
         taskManager.getAllTasks();
         System.out.println();
         System.out.println();
@@ -39,6 +41,7 @@ public class Main {
         taskManager.deleteTaskById(1);
         taskManager.deleteEpicById(3);
         taskManager.deleteSubtaskById(5);
+        taskManager.deleteEpicById(5);
         taskManager.getAllTasks();
         System.out.println();
         System.out.println();

@@ -15,6 +15,7 @@ public class TaskManager {
         all.addAll(getTasks());
         all.addAll(getEpics());
         all.addAll(getSubTasks());
+
         return all;
     }
 
