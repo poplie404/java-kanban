@@ -1,34 +1,35 @@
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TaskManager {
-    HashMap<Integer, Task> tasks = new HashMap<>();
-    HashMap<Integer, SubTask> subTasks = new HashMap<>();
-    HashMap<Integer, Epic> epics = new HashMap<>();
-    int currentId = 0;
+    private HashMap<Integer, Task> tasks = new HashMap<>();
+    private HashMap<Integer, SubTask> subTasks = new HashMap<>();
+    private HashMap<Integer, Epic> epics = new HashMap<>();
+    private int currentId = 0;
 
 
 
-    public ArrayList<Task> printAllTasks(){
+    public ArrayList<Task> getAllTasks(){
         ArrayList<Task> all = new ArrayList<>();
-        all.addAll(printAllSimpleTasks(tasks));
-        all.addAll(printAllEpics(epics));
-        all.addAll(printAllSubTasks(subTasks));
+        all.addAll(getTasks());
+        all.addAll(getEpics());
+        all.addAll(getSubTasks());
         return all;
     }
 
-    public HashMap<Integer, Task> getTasks() {
-        return tasks;
+    public List<Task> getTasks() {
+        return new ArrayList<>(tasks.values());
     }
 
 
-    public HashMap<Integer, SubTask> getSubTasks() {
-        return subTasks;
+    public List<SubTask> getSubTasks() {
+        return new ArrayList<>(subTasks.values());
     }
 
 
-    public HashMap<Integer, Epic> getEpics() {
-        return epics;
+    public List <Epic> getEpics() {
+        return new ArrayList<>(epics.values());
     }
 
 
@@ -113,7 +114,7 @@ public class TaskManager {
         updateEpicStatus(epic);
     }
 
-    public void changeTaskStatus(int id, TaskStatus status){
+    public void updateTaskStatus(int id, TaskStatus status){
         if (tasks.containsKey(id)){
             Task task = tasks.get(id);
             task.setStatus(status);
@@ -122,7 +123,7 @@ public class TaskManager {
         }
     }
 
-    public void changeSubTaskStatus(int id, TaskStatus status){
+    public void updateSubTaskStatus(int id, TaskStatus status){
         if (subTasks.containsKey(id)) {
             SubTask subtask = subTasks.get(id);
             Epic epic = epics.get(subtask.getEpicId());
@@ -132,17 +133,8 @@ public class TaskManager {
             System.out.println("Нет такого id");
         }
     }
-
-    public ArrayList<Epic> printAllEpics(HashMap<Integer, Epic> epics){//кроме печати они возвращают
-        ArrayList<Epic> result = new ArrayList<>();
-        for (Epic epic : epics.values()){
-            result.add(epic);
-            System.out.println(epic.toString());
-        }
-        return result;
-    }
-
-    public ArrayList<SubTask> printAllSubTasksInEpic(Epic epic){
+    
+    public ArrayList<SubTask> getAllSubTasksInEpic(Epic epic){
         ArrayList<SubTask> result = new ArrayList<>();
         for (int i : epic.getSubTaskIds()){
             result.add(subTasks.get(i));
@@ -151,7 +143,7 @@ public class TaskManager {
         return result;
     }
 
-    public void updateEpicStatus(Epic epic) {
+    private void updateEpicStatus(Epic epic) {
         ArrayList<Integer> subtaskIds = epic.getSubTaskIds();
 
         if (subtaskIds == null || subtaskIds.isEmpty()) {
@@ -181,26 +173,4 @@ public class TaskManager {
             epic.setStatus(TaskStatus.IN_PROGRESS);
         }
     }
-
-
-    public static ArrayList<SubTask> printAllSubTasks(HashMap<Integer, SubTask> subtasks){
-        ArrayList<SubTask> result = new ArrayList<>();
-        for (SubTask subtask : subtasks.values()){
-            result.add(subtask);
-            System.out.println(subtask.toString());
-        }
-        return result;
-    }
-
-    public static ArrayList<Task> printAllSimpleTasks(HashMap<Integer, Task> tasks){
-        ArrayList<Task> result = new ArrayList<>();
-        for (Task task : tasks.values()){
-            System.out.println(task.toString());
-            result.add(task);
-        }
-        return result;
-    }
-
-
-
 }

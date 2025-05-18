@@ -21,21 +21,21 @@ public class Main {
         taskManager.addSubTask(sub1);
         taskManager.addSubTask(sub2);
         taskManager.addSubTask(sub3);
-        taskManager.printAllTasks();
+        taskManager.getAllTasks();
         System.out.println();
         System.out.println();
 
-        taskManager.changeTaskStatus(0, TaskStatus.IN_PROGRESS);
-        taskManager.changeSubTaskStatus(5, TaskStatus.DONE);
-        taskManager.changeSubTaskStatus(6, TaskStatus.DONE);
-        taskManager.printAllTasks();
+        taskManager.updateTaskStatus(0, TaskStatus.IN_PROGRESS);
+        taskManager.updateSubTaskStatus(5, TaskStatus.DONE);
+        taskManager.updateSubTaskStatus(6, TaskStatus.DONE);
+        taskManager.getAllTasks();
         System.out.println();
         System.out.println();
 
         taskManager.deleteTaskById(1);
         taskManager.deleteEpicById(3);
         taskManager.deleteSubtaskById(5);
-        taskManager.printAllTasks();
+        taskManager.getAllTasks();
         System.out.println();
         System.out.println();
 
