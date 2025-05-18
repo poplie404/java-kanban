@@ -114,23 +114,23 @@ public class TaskManager {
         updateEpicStatus(epic);
     }
 
-    public void updateTaskStatus(int id, TaskStatus status){
-        if (tasks.containsKey(id)){
-            Task task = tasks.get(id);
-            task.setStatus(status);
-        }else {
-            System.out.println("Нет такого id");
+    public void updateTaskStatus(Task task, TaskStatus status){
+        Task newTask = task;
+        newTask.setStatus(status);
+        if (tasks.containsKey(task.getId())){
+            tasks.put(task.getId(), newTask);
         }
     }
 
-    public void updateSubTaskStatus(int id, TaskStatus status){
-        if (subTasks.containsKey(id)) {
-            SubTask subtask = subTasks.get(id);
+    public void updateSubTaskStatus(SubTask subtask, TaskStatus status) {
+        SubTask newSubtask = subtask;
+        newSubtask.setStatus(status);
+        if (subTasks.containsKey(subtask.getId())) {
+            subTasks.put(subtask.getId(), newSubtask);
             Epic epic = epics.get(subtask.getEpicId());
-            subtask.setStatus(status);
-            updateEpicStatus(epic);
-        }else {
-            System.out.println("Нет такого id");
+            if (epic != null) {
+                updateEpicStatus(epic);
+            }
         }
     }
     
@@ -148,6 +148,7 @@ public class TaskManager {
 
         if (subtaskIds == null || subtaskIds.isEmpty()) {
             epic.setStatus(TaskStatus.NEW);
+            epics.put(epic.getId(), epic);
             return;
         }
 
@@ -172,5 +173,7 @@ public class TaskManager {
         } else {
             epic.setStatus(TaskStatus.IN_PROGRESS);
         }
+        epics.put(epic.getId(), epic);
     }
+
 }
