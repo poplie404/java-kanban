@@ -114,26 +114,30 @@ public class TaskManager {
         updateEpicStatus(epic);
     }
 
-    public void updateTaskStatus(Task task, TaskStatus status){
-        Task newTask = task;
-        newTask.setStatus(status);
+    public void updateTask(Task task){
         if (tasks.containsKey(task.getId())){
-            tasks.put(task.getId(), newTask);
+            tasks.put(task.getId(), task);
         }
     }
 
-    public void updateSubTaskStatus(SubTask subtask, TaskStatus status) {
-        SubTask newSubtask = subtask;
-        newSubtask.setStatus(status);
+    public void updateSubTask(SubTask subtask) {
         if (subTasks.containsKey(subtask.getId())) {
-            subTasks.put(subtask.getId(), newSubtask);
+            subTasks.put(subtask.getId(), subtask);
             Epic epic = epics.get(subtask.getEpicId());
             if (epic != null) {
                 updateEpicStatus(epic);
             }
         }
     }
-    
+
+    public void updateEpic(Epic epic) {
+        if (epics.containsKey(epic.getId())) {
+            epics.put(epic.getId(), epic);
+            updateEpicStatus(epic); // Обновим статус эпика на основе его подзадач
+        }
+    }
+
+
     public ArrayList<SubTask> getAllSubTasksInEpic(Epic epic){
         ArrayList<SubTask> result = new ArrayList<>();
         for (int i : epic.getSubTaskIds()){

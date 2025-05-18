@@ -25,9 +25,13 @@ public class Main {
         System.out.println();
         System.out.println();
 
-        taskManager.updateTaskStatus(task1, TaskStatus.IN_PROGRESS);
-        taskManager.updateSubTaskStatus(sub2, TaskStatus.DONE);
-        taskManager.updateSubTaskStatus(sub3, TaskStatus.DONE);
+        task1.setStatus(TaskStatus.IN_PROGRESS);
+        sub2.setStatus(TaskStatus.IN_PROGRESS);
+        sub3.setStatus(TaskStatus.DONE);
+
+        taskManager.updateTask(task1);
+        taskManager.updateSubTask(sub2);
+        taskManager.updateSubTask(sub3);
         taskManager.getAllTasks();
         System.out.println();
         System.out.println();
