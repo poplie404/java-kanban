@@ -4,7 +4,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        TaskManager taskManager = new TaskManager();
+        TaskManager taskManager = new InMemoryTaskManager();
 
         Task task1 = new Task("Задача 1", "Описание задачи 1");
         Task task2 = new Task("Задача 2", "Описание задачи 2");
@@ -15,13 +15,19 @@ public class Main {
         SubTask sub3 = new SubTask("Sub3", "Подзадача3", 3);
 
         taskManager.addTask(task1);
+        taskManager.getTaskById(task1.id);
         taskManager.addTask(task2);
+        taskManager.getTaskById(task2.id);
         taskManager.addEpic(epic);
+        taskManager.getEpicById(epic.id);
+        taskManager.getEpicById(epic.id);
         taskManager.addEpic(epic2);
         taskManager.addSubTask(sub1);
         taskManager.addSubTask(sub2);
         taskManager.addSubTask(sub3);
+        taskManager.getSubTaskById(sub3.id);
         taskManager.getAllTasks();
+        InMemoryTaskManager.printAllTasks(taskManager);
         System.out.println();
         System.out.println();
 
@@ -34,7 +40,10 @@ public class Main {
         taskManager.updateSubTask(sub2);
         taskManager.updateSubTask(sub3);
         taskManager.updateEpic(epic2);
+        taskManager.getEpicById(epic2.id);
         taskManager.getAllTasks();
+        InMemoryTaskManager.printAllTasks(taskManager);
+
         System.out.println();
         System.out.println();
 
