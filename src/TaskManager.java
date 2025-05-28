@@ -4,7 +4,7 @@ import java.util.List;
 public interface TaskManager {
     List<Task> getHistory();
 
-    ArrayList<Task> getAllTasks();
+    List<Task> getAllTasks();
 
     List<Task> getTasks();
 
@@ -38,6 +38,6 @@ public interface TaskManager {
 
     void updateEpic(Epic epic);
 
-    ArrayList<SubTask> getAllSubTasksInEpic(Epic epic);
+    List<SubTask> getAllSubTasksInEpic(Epic epic);
 
 }
