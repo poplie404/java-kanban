@@ -51,7 +51,10 @@ public class Main {
         taskManager.deleteEpicById(3);
         taskManager.deleteSubtaskById(5);
         taskManager.deleteEpicById(5);
+        taskManager.getEpicById(epic2.id);
+        taskManager.getEpicById(epic2.id);
         taskManager.getAllTasks();
+        InMemoryTaskManager.printAllTasks(taskManager);
         System.out.println();
         System.out.println();
 

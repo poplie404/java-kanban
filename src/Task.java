@@ -1,6 +1,4 @@
-import java.util.HashMap;
 import java.util.Objects;
-import java.util.Arrays;
 
 public class Task {
     protected String name;

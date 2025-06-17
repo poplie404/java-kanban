@@ -17,7 +17,7 @@ public class InMemoryTaskManager implements TaskManager {
 
 
     @Override
-    public ArrayList<Task> getAllTasks(){
+    public ArrayList<Task> getAllTasks() {
         ArrayList<Task> all = new ArrayList<>();
         all.addAll(getTasks());
         all.addAll(getEpics());
@@ -61,7 +61,7 @@ public class InMemoryTaskManager implements TaskManager {
 
 
     @Override
-    public List <Epic> getEpics() {
+    public List<Epic> getEpics() {
         return new ArrayList<>(epics.values());
     }
 
@@ -74,21 +74,22 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task getTaskById(int id){
-        if (tasks.containsKey(id)){
+    public Task getTaskById(int id) {
+        if (tasks.containsKey(id)) {
             historyManager.add(tasks.get(id));
             return tasks.get(id);
-        }else {
+        } else {
             return null;
         }
     }
+
     @Override
     public Epic getEpicById(int id) {
         if (epics.containsKey(id)) {
             historyManager.add(epics.get(id));
             return epics.get(id);
 
-        }else {
+        } else {
             return null;
         }
     }
@@ -104,7 +105,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteTaskById(int id){
+    public void deleteTaskById(int id) {
         tasks.remove(id);
     }
 
@@ -169,8 +170,8 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateTask(Task task){
-        if (tasks.containsKey(task.getId())){
+    public void updateTask(Task task) {
+        if (tasks.containsKey(task.getId())) {
             tasks.put(task.getId(), task);
         }
     }
@@ -196,9 +197,9 @@ public class InMemoryTaskManager implements TaskManager {
 
 
     @Override
-    public List<SubTask> getAllSubTasksInEpic(Epic epic){
+    public List<SubTask> getAllSubTasksInEpic(Epic epic) {
         List<SubTask> result = new ArrayList<>();
-        for (int i : epic.getSubTaskIds()){
+        for (int i : epic.getSubTaskIds()) {
             result.add(subTasks.get(i));
             System.out.println(subTasks.get(i).toString());
         }
