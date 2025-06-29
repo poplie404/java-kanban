@@ -9,11 +9,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class FileBackedTaskManagerTest {
     private File tempFile;
+    private FileBackedTaskManager manager;
 
     @BeforeEach
         public void setup() throws IOException {
             // создаём временный файл
             tempFile = File.createTempFile("tasks", ".csv");
+            manager = new FileBackedTaskManager(tempFile);
+
         }
 
 
@@ -26,8 +29,7 @@ public class FileBackedTaskManagerTest {
 
 
     @Test
-    public void ShouldAddAndLoadSingleTask() {
-        FileBackedTaskManager manager = new FileBackedTaskManager(tempFile);
+    public void shouldAddAndLoadSingleTask() {
         Task task = new Task("name", "desc");
 
         manager.addTask(task);
@@ -45,8 +47,7 @@ public class FileBackedTaskManagerTest {
 
     }
     @Test
-    public void ShouldAddAndLoadEpicWithSubTask() {
-        FileBackedTaskManager manager = new FileBackedTaskManager(tempFile);
+    public void shouldAddAndLoadEpicWithSubTask() {
 
         Epic epic = new Epic("name", "desc");
         manager.addEpic(epic); // менеджер присвоит ID
@@ -82,8 +83,7 @@ public class FileBackedTaskManagerTest {
     }
 
     @Test
-    public void ShouldReturnEmptyManager() {
-        FileBackedTaskManager manager = new FileBackedTaskManager(tempFile);
+    public void shouldReturnEmptyManager() {
         manager.save();
         FileBackedTaskManager loaded = FileBackedTaskManager.loadFromFile(tempFile);
 
@@ -93,8 +93,7 @@ public class FileBackedTaskManagerTest {
     }
 
     @Test
-    public void ShouldReturnUpdatedTasks() {
-        FileBackedTaskManager manager = new FileBackedTaskManager(tempFile);
+    public void shouldReturnUpdatedTasks() {
         Task task = new Task("name", "desc");
         manager.addTask(task);
 
@@ -111,9 +110,7 @@ public class FileBackedTaskManagerTest {
     }
 
     @Test
-    public void ShouldRestoreCurrentId() {
-        FileBackedTaskManager manager = new FileBackedTaskManager(tempFile);
-
+    public void shouldRestoreCurrentId() {
         Task task1 = new Task("Task1", "Desc1");
         manager.addTask(task1);
 

@@ -74,7 +74,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private String toString(Task task) {
         String epicID = "";
-        if (task instanceof SubTask subTask) {
+        if (task.getType() == TaskType.SUBTASK) {
+            SubTask subTask = (SubTask) task;
             epicID = String.valueOf(subTask.getEpicId());
         }
 
@@ -132,7 +133,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             writer.write("id,type,name,status,description,epic\n");
 
             for (Task task : getTasks()) {
-                if (!(task instanceof SubTask)) {
+                if (!(task.getType() == TaskType.SUBTASK)) {
                     writer.write(toString(task) + "\n");
                 }
             }
