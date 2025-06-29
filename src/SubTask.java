@@ -46,6 +46,10 @@ public class SubTask extends Task {
                 Objects.equals(epicId, subtask.epicId);
 
     }
+
+    public TaskType getType() {
+        return TaskType.SUBTASK; // или EPIC, или SUBTASK
+    }
 }
 
 

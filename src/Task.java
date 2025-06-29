@@ -74,5 +74,7 @@ public class Task {
 
     }
 
-
+    public TaskType getType() {
+        return TaskType.TASK; // или EPIC, или SUBTASK
+    }
 }

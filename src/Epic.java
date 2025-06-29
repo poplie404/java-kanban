@@ -48,4 +48,8 @@ public class Epic extends Task {
                 Objects.equals(subTaskIds, epic.subTaskIds);
     }
 
+    public TaskType getType() {
+        return TaskType.EPIC; // или EPIC, или SUBTASK
+    }
+
 }
