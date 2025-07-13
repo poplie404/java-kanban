@@ -48,8 +48,12 @@ class EpicTest {
         manager.addEpic(epic);
 
         SubTask sub1 = new SubTask("Sub1", "desc", epic.getId());
+        sub1.setStartTime(LocalDateTime.of(2025, 1, 1, 10, 30));
+        sub1.setDuration(Duration.ofMinutes(60));
         sub1.setId(20);
         SubTask sub2 = new SubTask("Sub2", "desc", epic.getId());
+        sub2.setStartTime(LocalDateTime.of(2026, 1, 1, 10, 30));
+        sub2.setDuration(Duration.ofMinutes(60));
         sub2.setId(30);
 
         manager.addSubTask(sub1);
@@ -70,8 +74,12 @@ class EpicTest {
         manager.addEpic(epic);
 
         SubTask sub1 = new SubTask("Sub1", "desc", epic.getId());
+        sub1.setStartTime(LocalDateTime.of(2025, 1, 1, 10, 30));
+        sub1.setDuration(Duration.ofMinutes(60));
         sub1.setId(20);
         SubTask sub2 = new SubTask("Sub2", "desc", epic.getId());
+        sub2.setStartTime(LocalDateTime.of(2026, 1, 1, 10, 30));
+        sub2.setDuration(Duration.ofMinutes(60));
         sub2.setId(30);
 
         manager.addSubTask(sub1);
@@ -92,8 +100,12 @@ class EpicTest {
         manager.addEpic(epic);
 
         SubTask sub1 = new SubTask("Sub1", "desc", epic.getId());
+        sub1.setStartTime(LocalDateTime.of(2025, 1, 1, 10, 30));
+        sub1.setDuration(Duration.ofMinutes(60));
         sub1.setId(20);
         SubTask sub2 = new SubTask("Sub2", "desc", epic.getId());
+        sub2.setStartTime(LocalDateTime.of(2026, 1, 1, 10, 30));
+        sub2.setDuration(Duration.ofMinutes(60));
         sub2.setId(30);
 
         manager.addSubTask(sub1);
