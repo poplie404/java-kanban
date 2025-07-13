@@ -25,18 +25,20 @@ public interface TaskManager {
 
     void deleteEpicById(int id);
 
-    void addTask(Task task);
+    void addTask(Task task) throws TaskValidationException;
 
     void addEpic(Epic epic);
 
-    void addSubTask(SubTask subtask);
+    void addSubTask(SubTask subtask) throws TaskValidationException;
 
-    void updateTask(Task task);
+    void updateTask(Task task) throws TaskValidationException;
 
     void updateSubTask(SubTask subtask);
 
     void updateEpic(Epic epic);
 
     List<SubTask> getAllSubTasksInEpic(Epic epic);
+
+    List<Task> getPrioritizedTasks();
 
 }

@@ -4,94 +4,74 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class InMemoryHistoryManagerTest {
-    @Test
-    void add() {
-        HistoryManager historyManager = new InMemoryHistoryManager();
-        Task task = new Task("Test Task", "Test Description");
-
-        historyManager.add(task);
-        final List<Task> history = historyManager.getHistory();
-        assertNotNull(history, "После добавления задачи, история не должна быть пустой.");
-        assertEquals(1, history.size(), "После добавления задачи, история не должна быть пустой.");
+class InMemoryHistoryManagerTest extends TaskManagerTest<InMemoryHistoryManager> {
+    @Override
+    protected InMemoryHistoryManager createTaskManager() {
+        return new InMemoryHistoryManager();
     }
+
+
     @Test
-    public void shouldKeepOnlyLastAppereanceInHistory() {
-        HistoryManager historyManager = new InMemoryHistoryManager();
-        Task task = new Task("Test Task", "Test Description");
-        task.setId(0);
+    public void historyShouldUpdateWhenTaskIsDeleted() {
+        InMemoryTaskManager manager = new InMemoryTaskManager();
+        Task task = new Task("name", "desc");
+        manager.addTask(task); // теперь задача добавлена и получила id от менеджера
 
-        historyManager.add(task);
-        task.setName("Test Task2");
-        historyManager.add(task);
-        final List<Task> history = historyManager.getHistory();
-        assertEquals(1, history.size());
-        assertEquals("Test Task2", history.get(0).name);
+        Task savedTask = manager.getTaskById(task.getId()); // теперь попадёт в историю
+        assertTrue(manager.getHistory().contains(savedTask), "Задача должна быть в истории");
 
+        manager.deleteTaskById(task.getId());
+        assertFalse(manager.getHistory().contains(savedTask), "Задача должна быть удалена из истории");
     }
+
+
     @Test
-    public void shouldRemoveTaskFromHistory() {
-        HistoryManager historyManager = new InMemoryHistoryManager();
-        Task task = new Task("Test Task", "Test Description");
-        task.setId(0);
+    public void historyShouldUpdateWhenSubtaskIsDeleted() {
+        InMemoryTaskManager manager = new InMemoryTaskManager();
 
-        historyManager.add(task);
-        historyManager.remove(0);
-        final List<Task> history = historyManager.getHistory();
-        assertEquals(0, history.size());
+        Epic epic = new Epic("name", "desc");
+        manager.addEpic(epic);
+        int epicId = epic.getId();
+
+        SubTask subTask1 = new SubTask("name", "desc", epicId);
+        subTask1.setId(10);
+        manager.addSubTask(subTask1);
+        int subTaskId = subTask1.getId();
+
+        manager.getSubTaskById(subTaskId);
+        assertTrue(manager.getHistory().contains(subTask1), "Подзадача должна быть в истории");
+
+        manager.deleteSubtaskById(subTaskId);
+        assertFalse(manager.getHistory().contains(subTask1), "Подзадача должна быть удалена из истории");
     }
+
+
     @Test
-    public void shouldPreserveOrderInHistory() {
-        HistoryManager historyManager = new InMemoryHistoryManager();
-        Task task1 = new Task("Test Task1", "Test Description");
-        Task task2 = new Task("Test Task2", "Test Description");
-        Task task3 = new Task("Test Task3", "Test Description");
-        task1.setId(1);
-        task2.setId(2);
-        task3.setId(3);
-        historyManager.add(task1);
-        historyManager.add(task2);
-        historyManager.add(task3);
-        final List<Task> history = historyManager.getHistory();
-        assertEquals(3, history.size());
-        assertEquals(1, history.get(0).getId());
-        assertEquals(2, history.get(1).getId());
-        assertEquals(3, history.get(2).getId());
+    public void historyShouldUpdateWhenEpicIsDeleted() {
+        InMemoryTaskManager manager = new InMemoryTaskManager();
+        Epic epic = new Epic("name", "desc");
+        SubTask subTask1 = new SubTask("name", "desc", epic.getId());
+        subTask1.setId(10);
+        SubTask subTask2 = new SubTask("name2", "desc2", epic.getId());
+        subTask2.setId(20);
+
+        manager.addEpic(epic);
+        manager.addSubTask(subTask1);
+        manager.addSubTask(subTask2);
+
+        manager.getEpicById(epic.getId());
+        manager.getSubTaskById(subTask1.getId());
+        manager.getSubTaskById(subTask2.getId());
+
+        assertTrue(manager.getHistory().contains(epic), "Эпик должен быть в истории");
+        assertTrue(manager.getHistory().contains(subTask1), "Подзадача 1 должна быть в истории");
+        assertTrue(manager.getHistory().contains(subTask2), "Подзадача 2 должна быть в истории");
+
+        manager.deleteEpicById(epic.getId());
+
+        assertFalse(manager.getHistory().contains(epic), "Эпик должен быть удалён из истории");
+        assertFalse(manager.getHistory().contains(subTask1), "Подзадача 1 должна быть удалена из истории");
+        assertFalse(manager.getHistory().contains(subTask2), "Подзадача 2 должна быть удалена из истории");
     }
-    @Test
-    public void shouldReturnEmptyHistoryIfNothingAdded() {
-        HistoryManager historyManager = new InMemoryHistoryManager();
-        final List<Task> history = historyManager.getHistory();
-        assertTrue(history.isEmpty());
-    }
-    @Test
-    public void shouldRemoveFromBeginningMiddleAndEndCorrectly() {
-        HistoryManager historyManager = new InMemoryHistoryManager();
 
-        Task task1 = new Task("Test Task1", "Test Description");
-        task1.setId(1);
-        Task task2 = new Task("Test Task2", "Test Description");
-        task2.setId(2);
-        Task task3 = new Task("Test Task3", "Test Description");
-        task3.setId(3);
-
-        historyManager.add(task1);
-        historyManager.add(task2);
-        historyManager.add(task3);
-
-        historyManager.remove(1);
-        List<Task> history = historyManager.getHistory();
-        assertEquals(2, history.size());
-        assertEquals(2, history.get(0).getId());
-        assertEquals(3, history.get(1).getId());
-
-        historyManager.remove(2);
-        history = historyManager.getHistory();
-        assertEquals(1, history.size());
-        assertEquals(3, history.get(0).getId());
-
-        historyManager.remove(3);
-        history = historyManager.getHistory();
-        assertTrue(history.isEmpty());
-    }
 }

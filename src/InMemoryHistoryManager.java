@@ -3,7 +3,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class InMemoryHistoryManager implements HistoryManager {
+public class InMemoryHistoryManager implements HistoryManager, TaskManager {
     private Node<Task> head;
     private Node<Task> tail;
     private final Map<Integer, Node<Task>> nodeMap = new HashMap<>();
@@ -33,6 +33,101 @@ public class InMemoryHistoryManager implements HistoryManager {
             current = current.next;
         }
         return history;
+    }
+
+    @Override
+    public List<Task> getAllTasks() {
+        return List.of();
+    }
+
+    @Override
+    public List<Task> getTasks() {
+        return List.of();
+    }
+
+    @Override
+    public List<SubTask> getSubTasks() {
+        return List.of();
+    }
+
+    @Override
+    public List<Epic> getEpics() {
+        return List.of();
+    }
+
+    @Override
+    public void deleteAllTasks() {
+
+    }
+
+    @Override
+    public Task getTaskById(int id) {
+        return null;
+    }
+
+    @Override
+    public Epic getEpicById(int id) {
+        return null;
+    }
+
+    @Override
+    public SubTask getSubTaskById(int id) {
+        return null;
+    }
+
+    @Override
+    public void deleteTaskById(int id) {
+
+    }
+
+    @Override
+    public void deleteSubtaskById(int id) {
+
+    }
+
+    @Override
+    public void deleteEpicById(int id) {
+
+    }
+
+    @Override
+    public void addTask(Task task) {
+
+    }
+
+    @Override
+    public void addEpic(Epic epic) {
+
+    }
+
+    @Override
+    public void addSubTask(SubTask subtask) {
+
+    }
+
+    @Override
+    public void updateTask(Task task) {
+
+    }
+
+    @Override
+    public void updateSubTask(SubTask subtask) {
+
+    }
+
+    @Override
+    public void updateEpic(Epic epic) {
+
+    }
+
+    @Override
+    public List<SubTask> getAllSubTasksInEpic(Epic epic) {
+        return List.of();
+    }
+
+    @Override
+    public List<Task> getPrioritizedTasks() {
+        return List.of();
     }
 
     @Override

@@ -1,4 +1,5 @@
-
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class Main {
 
@@ -13,6 +14,17 @@ public class Main {
         SubTask sub1 = new SubTask("Sub1", "Подзадача1", 2);
         SubTask sub2 = new SubTask("Sub2", "Подзадача2", 2);
         SubTask sub3 = new SubTask("Sub3", "Подзадача3", 3);
+
+        task1.setStartTime(LocalDateTime.now());
+        task1.setDuration(Duration.ofMinutes(15));
+        task2.setStartTime(LocalDateTime.now().plusMinutes(16));
+        task2.setDuration(Duration.ofMinutes(2));
+        sub1.setStartTime(LocalDateTime.now().plusMinutes(30));
+        sub1.setDuration(Duration.ofMinutes(5));
+        sub2.setStartTime(LocalDateTime.now().plusMinutes(40));
+        sub2.setDuration(Duration.ofMinutes(10));
+        sub3.setStartTime(LocalDateTime.now().plusMinutes(90));
+        sub3.setDuration(Duration.ofMinutes(50));
 
         taskManager.addTask(task1);
         taskManager.getTaskById(task1.id);

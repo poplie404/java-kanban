@@ -1,13 +1,50 @@
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Epic extends Task {
     private List<Integer> subTaskIds;
+    protected Duration duration;
+    protected LocalDateTime startTime;
+    protected LocalDateTime endTime;
+
+    final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy, HH:mm");
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+        updateEndTime();
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+        updateEndTime();
+    }
+
+    private void updateEndTime() {
+        if (startTime != null && duration != null) {
+            this.endTime = startTime.plus(duration);
+        }
+    }
 
     public Epic(String name, String description) {
         super(name, description);
-
+        this.subTaskIds = new ArrayList<>();
     }
 
     public List<Integer> getSubTaskIds() {
@@ -26,6 +63,9 @@ public class Epic extends Task {
                 ", description='" + description + '\'' +
                 ", id=" + id +
                 ", status=" + status +
+                ", startTime=" + (startTime != null ? startTime.format(formatter) : "null") +
+                ", endTime=" + (endTime != null ? endTime.format(formatter) : "null") +
+                ", duration=" + (duration != null ? duration.toMinutes() : "null") +
                 '}';
     }
 

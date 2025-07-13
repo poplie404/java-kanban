@@ -1,7 +1,45 @@
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class SubTask extends Task {
     private int epicId;
+    protected Duration duration;
+    protected LocalDateTime startTime;
+    protected LocalDateTime endTime;
+
+    final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy, HH:mm");
+
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+        updateEndTime();
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+        updateEndTime();
+    }
+
+    private void updateEndTime() {
+        if (startTime != null && duration != null) {
+            this.endTime = startTime.plus(duration);
+        }
+    }
 
     public SubTask(String name, String description, int epicId) {
         super(name, description);
@@ -18,14 +56,22 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String start = (startTime != null) ? startTime.format(formatter) : "null";
+        String end = (endTime != null) ? endTime.format(formatter) : "null";
+        String dur = (duration != null) ? duration.toString() : "null";
+
         return "SubTask{" +
-                "epicId=" + epicId +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", id=" + id +
-                ", status=" + status +
+                ", startTime=" + start +
+                ", endTime=" + end +
+                ", duration=" + dur +
+                ", epicId=" + epicId +
                 '}';
     }
+
 
     @Override
     public int hashCode() {
