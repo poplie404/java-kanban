@@ -1,21 +1,23 @@
+import managers.memory.InMemoryTaskManager;
+import model.Epic;
+import model.SubTask;
+import model.Task;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class InMemoryHistoryManagerTest extends TaskManagerTest<InMemoryHistoryManager> {
-    @Override
-    protected InMemoryHistoryManager createTaskManager() {
-        return new InMemoryHistoryManager();
-    }
-
+class InMemoryHistoryManagerTest {
 
     @Test
     public void historyShouldUpdateWhenTaskIsDeleted() {
         InMemoryTaskManager manager = new InMemoryTaskManager();
         Task task = new Task("name", "desc");
-        manager.addTask(task); // теперь задача добавлена и получила id от менеджера
+        task.setStartTime(LocalDateTime.now());
+        task.setDuration(Duration.ofMinutes(10));
+        manager.addTask(task);
 
         Task savedTask = manager.getTaskById(task.getId()); // теперь попадёт в историю
         assertTrue(manager.getHistory().contains(savedTask), "Задача должна быть в истории");
@@ -35,6 +37,8 @@ class InMemoryHistoryManagerTest extends TaskManagerTest<InMemoryHistoryManager>
 
         SubTask subTask1 = new SubTask("name", "desc", epicId);
         subTask1.setId(10);
+        subTask1.setStartTime(LocalDateTime.now());
+        subTask1.setDuration(Duration.ofMinutes(10));
         manager.addSubTask(subTask1);
         int subTaskId = subTask1.getId();
 
@@ -52,8 +56,12 @@ class InMemoryHistoryManagerTest extends TaskManagerTest<InMemoryHistoryManager>
         Epic epic = new Epic("name", "desc");
         SubTask subTask1 = new SubTask("name", "desc", epic.getId());
         subTask1.setId(10);
+        subTask1.setStartTime(LocalDateTime.now());
+        subTask1.setDuration(Duration.ofMinutes(10));
         SubTask subTask2 = new SubTask("name2", "desc2", epic.getId());
         subTask2.setId(20);
+        subTask2.setStartTime(LocalDateTime.now().plusDays(20));
+        subTask2.setDuration(Duration.ofMinutes(10));
 
         manager.addEpic(epic);
         manager.addSubTask(subTask1);

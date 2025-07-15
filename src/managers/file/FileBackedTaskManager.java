@@ -1,3 +1,8 @@
+package managers.file;
+
+import exceptions.ManagerSaveException;
+import managers.memory.InMemoryTaskManager;
+import model.*;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -11,7 +16,7 @@ import java.util.stream.Collectors;
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private File file;
 
-    final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy, HH:mm");
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
 
     public FileBackedTaskManager(File file) {
         this.file = file;
@@ -100,7 +105,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
 
-    static Task fromString(String value) {
+    public static Task fromString(String value) {
         String[] fields = value.split(",", -1); // ← -1 сохраняет пустые поля
 
         int id = Integer.parseInt(fields[0]);
@@ -112,7 +117,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String durationStr = fields[6];
         String epicIdStr = fields.length > 7 ? fields[7] : "";
 
-        LocalDateTime startTime = startTimeStr.isEmpty() ? null : LocalDateTime.parse(startTimeStr);
+        LocalDateTime startTime = startTimeStr.isEmpty() ? null : LocalDateTime.parse(startTimeStr, formatter);
         Duration duration = durationStr.isEmpty() ? null : Duration.ofMinutes(Long.parseLong(durationStr));
 
         Task task;
@@ -139,7 +144,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
 
-    public void save() {
+    private void save() {
         try (FileWriter writer = new FileWriter(file)) {
             writer.write("id,type,name,status,description,startTime,duration,epic\n");
 

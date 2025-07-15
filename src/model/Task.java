@@ -1,3 +1,5 @@
+package model;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -12,7 +14,13 @@ public class Task {
     protected LocalDateTime startTime;
     protected LocalDateTime endTime;
 
-    final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy, HH:mm");
+    protected final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
+
+    public Task(String name, String description) {
+        this.name = name;
+        this.description = description;
+        this.status = status.NEW;
+    }
 
     public LocalDateTime getEndTime() {
         return endTime;
@@ -37,18 +45,11 @@ public class Task {
         updateEndTime();
     }
 
-    private void updateEndTime() {
+    public void updateEndTime() {
         if (startTime != null && duration != null) {
             this.endTime = startTime.plus(duration);
         }
     }
-
-    public Task(String name, String description) {
-        this.name = name;
-        this.description = description;
-        this.status = status.NEW;
-    }
-
 
     public String getName() {
         return name;

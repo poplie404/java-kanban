@@ -1,5 +1,13 @@
+import exceptions.TaskValidationException;
+import managers.memory.InMemoryHistoryManager;
+import managers.memory.InMemoryTaskManager;
+import model.Epic;
+import model.SubTask;
+import model.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import service.HistoryManager;
+import service.TaskManager;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -24,6 +32,8 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
 
         Task task = new Task("Обычная задача", "Описание задачи");
+        task.setStartTime(LocalDateTime.now());
+        task.setDuration(Duration.ofMinutes(10));
         manager.addTask(task);
 
 
@@ -32,6 +42,8 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
 
         SubTask subtask = new SubTask("Подзадача", "Описание подзадачи", epic.getId());
+        subtask.setStartTime(LocalDateTime.now().plusMinutes(30));
+        subtask.setDuration(Duration.ofMinutes(10));
         manager.addSubTask(subtask);
 
 
@@ -43,7 +55,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void addToHistory() {
         HistoryManager historyManager = new InMemoryHistoryManager();
-        Task task = new Task("Test Task", "Test Description");
+        Task task = new Task("Test model.Task", "Test Description");
 
         historyManager.add(task);
         final List<Task> history = historyManager.getHistory();
@@ -54,7 +66,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     public void shouldRemoveTaskById() {
         InMemoryTaskManager manager = new InMemoryTaskManager();
-        Task task = new Task("Task", "Simple task");
+        Task task = new Task("model.Task", "Simple task");
+        task.setStartTime(LocalDateTime.now());
+        task.setDuration(Duration.ofMinutes(10));
         manager.addTask(task);
         manager.deleteTaskById(task.getId());
         assertNull(manager.getTaskById(task.getId()), "Задача должна быть удалена");
@@ -63,13 +77,17 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     public void shouldRemoveSubtaskById() {
         InMemoryTaskManager manager = new InMemoryTaskManager();
-        Epic epic = new Epic("Epic", "Main Epic");
+        Epic epic = new Epic("model.Epic", "Main model.Epic");
         manager.addEpic(epic);
 
         SubTask subTask1 = new SubTask("Sub1", "Desc", epic.getId());
         subTask1.setId(10);
+        subTask1.setStartTime(LocalDateTime.now());
+        subTask1.setDuration(Duration.ofMinutes(10));
         SubTask subTask2 = new SubTask("Sub2", "Desc", epic.getId());
         subTask2.setId(20);
+        subTask2.setStartTime(LocalDateTime.now().plusDays(20));
+        subTask2.setDuration(Duration.ofMinutes(10));
         manager.addSubTask(subTask1);
         manager.addSubTask(subTask2);
 
@@ -84,13 +102,17 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     public void shouldRemoveEpicByIdAndAllItsSubtasks() {
         InMemoryTaskManager manager = new InMemoryTaskManager();
-        Epic epic = new Epic("Epic", "Main Epic");
+        Epic epic = new Epic("model.Epic", "Main model.Epic");
         manager.addEpic(epic);
 
         SubTask subTask1 = new SubTask("Sub1", "Desc", epic.getId());
         subTask1.setId(10);
+        subTask1.setStartTime(LocalDateTime.now());
+        subTask1.setDuration(Duration.ofMinutes(10));
         SubTask subTask2 = new SubTask("Sub2", "Desc", epic.getId());
         subTask2.setId(20);
+        subTask2.setStartTime(LocalDateTime.now().plusMinutes(30));
+        subTask2.setDuration(Duration.ofMinutes(10));
         manager.addSubTask(subTask1);
         manager.addSubTask(subTask2);
 
@@ -104,7 +126,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     public void shouldKeepOnlyLastAppereanceInHistory() {
         HistoryManager historyManager = new InMemoryHistoryManager();
-        Task task = new Task("Test Task", "Test Description");
+        Task task = new Task("Test model.Task", "Test Description");
         task.setId(0);
 
         historyManager.add(task);
@@ -112,14 +134,14 @@ abstract class TaskManagerTest<T extends TaskManager> {
         historyManager.add(task);
         final List<Task> history = historyManager.getHistory();
         assertEquals(1, history.size());
-        assertEquals("Test Task2", history.get(0).name);
+        assertEquals("Test Task2", history.get(0).getName());
 
     }
 
     @Test
     public void shouldRemoveTaskFromHistory() {
         HistoryManager historyManager = new InMemoryHistoryManager();
-        Task task = new Task("Test Task", "Test Description");
+        Task task = new Task("Test model.Task", "Test Description");
         task.setId(0);
 
         historyManager.add(task);
@@ -188,13 +210,13 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     public void shouldThrowExceptionWhenAddingOverlappingTask() {
         InMemoryTaskManager manager = new InMemoryTaskManager();
-        Task task1 = new Task("Task 1", "Description 1");
+        Task task1 = new Task("model.Task 1", "Description 1");
         task1.setStartTime(LocalDateTime.of(2025, 1, 1, 10, 0));
         task1.setDuration(Duration.ofMinutes(60));
         task1.setId(100);
         manager.addTask(task1);
 
-        Task task2 = new Task("Task 1", "Description 1");
+        Task task2 = new Task("model.Task 1", "Description 1");
         task2.setStartTime(LocalDateTime.of(2025, 1, 1, 10, 30));
         task2.setDuration(Duration.ofMinutes(60));
         task2.setId(200);

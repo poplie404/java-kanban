@@ -1,7 +1,12 @@
+import managers.file.FileBackedTaskManager;
+import model.Epic;
+import model.SubTask;
+import model.Task;
 import org.junit.jupiter.api.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -31,6 +36,8 @@ public class FileBackedTaskManagerTest {
     @Test
     public void shouldAddAndLoadSingleTask() {
         Task task = new Task("name", "desc");
+        task.setStartTime(LocalDateTime.now());
+        task.setDuration(Duration.ofMinutes(10));
 
         manager.addTask(task);
 
@@ -57,6 +64,8 @@ public class FileBackedTaskManagerTest {
 
         SubTask subTask = new SubTask("subName", "subDesc", epicId);
         subTask.setId(1);
+        subTask.setStartTime(LocalDateTime.now());
+        subTask.setDuration(Duration.ofMinutes(10));
         manager.addSubTask(subTask);
 
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempFile);
@@ -84,7 +93,6 @@ public class FileBackedTaskManagerTest {
 
     @Test
     public void shouldReturnEmptyManager() {
-        manager.save();
         FileBackedTaskManager loaded = FileBackedTaskManager.loadFromFile(tempFile);
 
         assertTrue(loaded.getSubTasks().isEmpty());
@@ -95,6 +103,8 @@ public class FileBackedTaskManagerTest {
     @Test
     public void shouldReturnUpdatedTasks() {
         Task task = new Task("name", "desc");
+        task.setStartTime(LocalDateTime.now());
+        task.setDuration(Duration.ofMinutes(10));
         manager.addTask(task);
 
         task.setName("New name");
@@ -112,17 +122,23 @@ public class FileBackedTaskManagerTest {
     @Test
     public void shouldRestoreCurrentId() {
         Task task1 = new Task("Task1", "Desc1");
+        task1.setStartTime(LocalDateTime.now());
+        task1.setDuration(Duration.ofMinutes(10));
         manager.addTask(task1);
 
-        Epic epic = new Epic("Epic", "EpicDesc");
+        Epic epic = new Epic("model.Epic", "EpicDesc");
         manager.addEpic(epic);
 
         SubTask sub = new SubTask("Sub", "SubDesc", epic.getId());
+        sub.setStartTime(LocalDateTime.now().plusMinutes(20));
+        sub.setDuration(Duration.ofMinutes(10));
         manager.addSubTask(sub);
 
         FileBackedTaskManager loaded = FileBackedTaskManager.loadFromFile(tempFile);
 
         Task task2 = new Task("Task2", "Desc2");
+        task2.setStartTime(LocalDateTime.now().plusDays(20));
+        task2.setDuration(Duration.ofMinutes(10));
         loaded.addTask(task2);
 
         assertEquals(3, task2.getId(), "ID после загрузки должен продолжаться с правильного значения");

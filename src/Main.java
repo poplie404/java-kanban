@@ -1,3 +1,10 @@
+import managers.memory.InMemoryTaskManager;
+import model.Epic;
+import model.SubTask;
+import model.Task;
+import model.TaskStatus;
+import service.TaskManager;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -27,17 +34,17 @@ public class Main {
         sub3.setDuration(Duration.ofMinutes(50));
 
         taskManager.addTask(task1);
-        taskManager.getTaskById(task1.id);
+        taskManager.getTaskById(task1.getId());
         taskManager.addTask(task2);
-        taskManager.getTaskById(task2.id);
+        taskManager.getTaskById(task2.getId());
         taskManager.addEpic(epic);
-        taskManager.getEpicById(epic.id);
-        taskManager.getEpicById(epic.id);
+        taskManager.getEpicById(epic.getId());
+        taskManager.getEpicById(epic.getId());
         taskManager.addEpic(epic2);
         taskManager.addSubTask(sub1);
         taskManager.addSubTask(sub2);
         taskManager.addSubTask(sub3);
-        taskManager.getSubTaskById(sub3.id);
+        taskManager.getSubTaskById(sub3.getId());
         taskManager.getAllTasks();
         InMemoryTaskManager.printAllTasks(taskManager);
         System.out.println();
@@ -52,7 +59,7 @@ public class Main {
         taskManager.updateSubTask(sub2);
         taskManager.updateSubTask(sub3);
         taskManager.updateEpic(epic2);
-        taskManager.getEpicById(epic2.id);
+        taskManager.getEpicById(epic2.getId());
         taskManager.getAllTasks();
         InMemoryTaskManager.printAllTasks(taskManager);
 
@@ -63,8 +70,8 @@ public class Main {
         taskManager.deleteEpicById(3);
         taskManager.deleteSubtaskById(5);
         taskManager.deleteEpicById(5);
-        taskManager.getEpicById(epic2.id);
-        taskManager.getEpicById(epic2.id);
+        taskManager.getEpicById(epic2.getId());
+        taskManager.getEpicById(epic2.getId());
         taskManager.getAllTasks();
         InMemoryTaskManager.printAllTasks(taskManager);
         System.out.println();

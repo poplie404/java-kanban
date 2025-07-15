@@ -1,3 +1,9 @@
+package service;
+
+import model.Epic;
+import model.SubTask;
+import model.Task;
+
 import java.util.List;
 
 public interface TaskManager {
@@ -25,13 +31,13 @@ public interface TaskManager {
 
     void deleteEpicById(int id);
 
-    void addTask(Task task) throws TaskValidationException;
+    void addTask(Task task);
 
     void addEpic(Epic epic);
 
-    void addSubTask(SubTask subtask) throws TaskValidationException;
+    void addSubTask(SubTask subtask);
 
-    void updateTask(Task task) throws TaskValidationException;
+    void updateTask(Task task);
 
     void updateSubTask(SubTask subtask);
 

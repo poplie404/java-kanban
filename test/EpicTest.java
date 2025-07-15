@@ -1,3 +1,7 @@
+import managers.memory.InMemoryTaskManager;
+import model.Epic;
+import model.SubTask;
+import model.TaskStatus;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -11,7 +15,7 @@ class EpicTest {
     public void shouldBeEqualByEpicId(){
         Epic epic = new Epic("Epic1", "Подзадача1, подзадача2");
         Epic epic2 = new Epic("Epic1", "Подзадача1, подзадача2");
-        epic2.setId(epic.id);
+        epic2.setId(epic.getId());
         assertEquals(epic, epic2);
     }
     @Test
@@ -44,7 +48,7 @@ class EpicTest {
     @Test
     public void epicShouldBeDoneIfAllSubtasksAreDone() {
         InMemoryTaskManager manager = new InMemoryTaskManager();
-        Epic epic = new Epic("Epic", "Description");
+        Epic epic = new Epic("model.Epic", "Description");
         manager.addEpic(epic);
 
         SubTask sub1 = new SubTask("Sub1", "desc", epic.getId());
@@ -70,7 +74,7 @@ class EpicTest {
     @Test
     public void epicShouldBeInProgressIfAllSubtasksAreMixed() {
         InMemoryTaskManager manager = new InMemoryTaskManager();
-        Epic epic = new Epic("Epic", "Description");
+        Epic epic = new Epic("model.Epic", "Description");
         manager.addEpic(epic);
 
         SubTask sub1 = new SubTask("Sub1", "desc", epic.getId());
@@ -96,7 +100,7 @@ class EpicTest {
     @Test
     public void epicShouldBeInProgressIfAllSubtasksAreInProgress() {
         InMemoryTaskManager manager = new InMemoryTaskManager();
-        Epic epic = new Epic("Epic", "Description");
+        Epic epic = new Epic("model.Epic", "Description");
         manager.addEpic(epic);
 
         SubTask sub1 = new SubTask("Sub1", "desc", epic.getId());
@@ -122,7 +126,7 @@ class EpicTest {
     @Test
     public void epicTimeShouldBeCalculatedFromSubtasks() {
         InMemoryTaskManager manager = new InMemoryTaskManager();
-        Epic epic = new Epic("Epic", "With time");
+        Epic epic = new Epic("model.Epic", "With time");
         manager.addEpic(epic);
 
         SubTask sub1 = new SubTask("Sub1", "desc", epic.getId());
