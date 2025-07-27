@@ -14,7 +14,7 @@ public class Task {
     protected LocalDateTime startTime;
     protected LocalDateTime endTime;
 
-    protected final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
+    protected final transient DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
 
     public Task(String name, String description) {
         this.name = name;
