@@ -1,3 +1,5 @@
+import managers.memory.InMemoryTaskManager;
+import model.SubTask;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,7 +10,7 @@ class SubTaskTest {
     public void shouldBeEqualBySubTaskId(){
         SubTask sub1 = new SubTask("Sub1", "Подзадача1", 2);
         SubTask sub2 = new SubTask("Sub1", "Подзадача1", 2);
-        sub2.setId(sub1.id);
+        sub2.setId(sub1.getId());
         assertEquals(sub1, sub2);
     }
     @Test

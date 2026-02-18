@@ -1,4 +1,9 @@
-import java.util.ArrayList;
+package service;
+
+import model.Epic;
+import model.SubTask;
+import model.Task;
+
 import java.util.List;
 
 public interface TaskManager {
@@ -39,5 +44,7 @@ public interface TaskManager {
     void updateEpic(Epic epic);
 
     List<SubTask> getAllSubTasksInEpic(Epic epic);
+
+    List<Task> getPrioritizedTasks();
 
 }
