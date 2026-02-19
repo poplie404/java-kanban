@@ -1,14 +1,14 @@
-import java.util.HashMap;
+package model;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Epic extends Task{
-    private List<Integer> subTaskIds;
+public class Epic extends Task {
+    private List<Integer> subTaskIds = new ArrayList<>();
 
     public Epic(String name, String description) {
         super(name, description);
-
     }
 
     public List<Integer> getSubTaskIds() {
@@ -27,6 +27,9 @@ public class Epic extends Task{
                 ", description='" + description + '\'' +
                 ", id=" + id +
                 ", status=" + status +
+                ", startTime=" + (startTime != null ? startTime.format(formatter) : "null") +
+                ", endTime=" + (endTime != null ? endTime.format(formatter) : "null") +
+                ", duration=" + (duration != null ? duration.toMinutes() : "null") +
                 '}';
     }
 
@@ -47,6 +50,10 @@ public class Epic extends Task{
                 Objects.equals(description, epic.description) &&
                 Objects.equals(status, epic.status) &&
                 Objects.equals(subTaskIds, epic.subTaskIds);
+    }
+
+    public TaskType getType() {
+        return TaskType.EPIC;
     }
 
 }

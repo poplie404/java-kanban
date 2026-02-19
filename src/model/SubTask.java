@@ -1,7 +1,8 @@
-import java.util.Objects;
-import java.util.HashMap;
+package model;
 
-public class SubTask extends Task{
+import java.util.Objects;
+
+public class SubTask extends Task {
     private int epicId;
 
     public SubTask(String name, String description, int epicId) {
@@ -20,13 +21,16 @@ public class SubTask extends Task{
     @Override
     public String toString() {
         return "SubTask{" +
-                "epicId=" + epicId +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", id=" + id +
-                ", status=" + status +
+                ", startTime=" + (startTime != null ? startTime.format(formatter) : "null") +
+                ", endTime=" + (endTime != null ? endTime.format(formatter) : "null") +
+                ", duration=" + (duration != null ? duration.toMinutes() : "null") +
+                ", epicId=" + epicId +
                 '}';
     }
+
 
     @Override
     public int hashCode() {
@@ -46,6 +50,10 @@ public class SubTask extends Task{
                 Objects.equals(status, subtask.status) &&
                 Objects.equals(epicId, subtask.epicId);
 
+    }
+
+    public TaskType getType() {
+        return TaskType.SUBTASK;
     }
 }
 
