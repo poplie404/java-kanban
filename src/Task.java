@@ -1,6 +1,4 @@
-import java.util.HashMap;
 import java.util.Objects;
-import java.util.Arrays;
 
 public class Task {
     protected String name;
@@ -76,5 +74,7 @@ public class Task {
 
     }
 
-
+    public TaskType getType() {
+        return TaskType.TASK; // или EPIC, или SUBTASK
+    }
 }

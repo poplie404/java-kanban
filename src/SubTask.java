@@ -1,7 +1,6 @@
 import java.util.Objects;
-import java.util.HashMap;
 
-public class SubTask extends Task{
+public class SubTask extends Task {
     private int epicId;
 
     public SubTask(String name, String description, int epicId) {
@@ -46,6 +45,10 @@ public class SubTask extends Task{
                 Objects.equals(status, subtask.status) &&
                 Objects.equals(epicId, subtask.epicId);
 
+    }
+
+    public TaskType getType() {
+        return TaskType.SUBTASK; // или EPIC, или SUBTASK
     }
 }
 
